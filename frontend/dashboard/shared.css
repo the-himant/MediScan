@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --parrot: #7ED957;
+  --parrot-hover: #6AC843;
+  --parrot-ink: #173319;
+  --dark-green: #28532A;
+  --white: #FFFFFF;
+  --soft-green: #F5FAF2;
+  --border-green: #DCEAD4;
+  --text-main: #202820;
+  --text-secondary: #667266;
+  --shadow-card: 0 4px 20px rgba(40, 83, 42, 0.05);
+  --shadow-hover: 0 8px 26px rgba(40, 83, 42, 0.09);
+  --radius-card: 20px;
+  --radius-btn: 12px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--soft-green);
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', 'Noto Sans Gurmukhi', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--dark-green);
+  outline-offset: 2px;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 268px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidenav {
+  background: var(--white);
+  border-right: 1px solid var(--border-green);
+  padding: 1.5rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.25rem 0.4rem 1.35rem 0.4rem;
+  border-bottom: 1px solid var(--soft-green);
+  margin-bottom: 1.1rem;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--soft-green);
+  border: 1.5px solid var(--parrot);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--dark-green);
+  letter-spacing: -0.02em;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0.8rem 0.95rem;
+  border-radius: 13px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.98rem;
+  min-height: 46px;
+  transition: background-color 0.16s ease, color 0.16s ease, transform 0.14s ease;
+}
+
+.nav-link-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-link:hover {
+  background: var(--soft-green);
+  color: var(--dark-green);
+}
+
+.nav-link.active {
+  background: var(--parrot);
+  color: var(--parrot-ink);
+  font-weight: 700;
+}
+
+.nav-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--dark-green);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+}
+
+.nav-safety-card {
+  background: var(--soft-green);
+  border: 1px solid var(--border-green);
+  border-radius: 15px;
+  padding: 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.main-area {
+  padding: 1.5rem 2rem 3rem 2rem;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.topbar-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+}
+
+.lang-group {
+  display: inline-flex;
+  background: var(--white);
+  border: 1px solid var(--border-green);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+  box-shadow: var(--shadow-card);
+}
+
+.lang-pill {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  min-height: 36px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.lang-pill.active {
+  background: var(--parrot);
+  color: var(--parrot-ink);
+  font-weight: 700;
+}
+
+.surface-card {
+  background: var(--white);
+  border: 1px solid var(--border-green);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 1.15rem;
+}
+
+.btn-primary {
+  background: var(--parrot);
+  color: var(--parrot-ink);
+  border: 1px solid #68C540;
+  border-radius: var(--radius-btn);
+  padding: 0.75rem 1.2rem;
+  font-weight: 700;
+  font-size: 0.98rem;
+  min-height: 46px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, transform 0.12s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--parrot-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--text-main);
+  border: 1px solid var(--border-green);
+  border-radius: var(--radius-btn);
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  min-height: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--soft-green);
+  border-color: var(--dark-green);
+}
+
+.footer-note {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  margin-top: 1.5rem;
+  padding: 0 0.75rem;
+}
+
+.mobile-drawer-backdrop {
+  display: none;
+}
+
+.mobile-menu-btn {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidenav {
+    position: fixed;
+    left: -290px;
+    top: 0;
+    bottom: 0;
+    width: 270px;
+    height: 100vh;
+    z-index: 120;
+    transition: left 0.22s ease;
+  }
+
+  .sidenav.open {
+    left: 0;
+  }
+
+  .mobile-drawer-backdrop.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(32, 40, 32, 0.35);
+    z-index: 110;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--border-green);
+    background: var(--white);
+    color: var(--dark-green);
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .topbar-row {
+    justify-content: space-between;
+  }
+
+  .main-area {
+    padding: 1rem 1rem 2.5rem 1rem;
+  }
+}

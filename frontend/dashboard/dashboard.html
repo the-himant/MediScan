@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediScan AI — Dashboard</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.getElementById("fileInput");
+    const cameraInput = document.getElementById("cameraInput");
+    const previewPanel = document.getElementById("previewPanel");
+    const previewImage = document.getElementById("previewImage");
+
+    function showSelectedFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (previewImage) previewImage.src = ev.target.result;
+        if (previewPanel) previewPanel.style.display = "grid";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById("chooseFileBtn")?.addEventListener("click", () => {
+      fileInput?.click();
+    });
+
+    fileInput?.addEventListener("change", (e) => {
+      showSelectedFile(e.target.files?.[0]);
+      e.target.value = "";
+    });
+
+    document.getElementById("openCameraBtn")?.addEventListener("click", async () => {
+      const canLiveCam =
+        navigator.mediaDevices?.getUserMedia &&
+        (window.isSecureContext || location.hostname === "localhost" || location.hostname === "127.0.0.1");
+
+      if (canLiveCam) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
+          stream.getTracks().forEach((t) => t.stop());
+        } catch (_) { }
+      }
+      cameraInput?.click();
+    });
+
+    cameraInput?.addEventListener("change", (e) => {
+      showSelectedFile(e.target.files?.[0]);
+      e.target.value = "";
+    });
+  });
+</script>
+
+<body>
+  <div id="mobileBackdrop" class="mobile-drawer-backdrop"></div>
+  <div class="app-shell">
+    <aside id="sideNav" class="sidenav" aria-label="Main Navigation">
+      <div>
+        <div class="brand-lockup">
+          <div class="brand-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3C7.5 3 4 6.5 4 11c0 5.5 8 10 8 10s8-4.5 8-10c0-4.5-3.5-8-8-8Z" fill="#7ED957"
+                stroke="#28532A" stroke-width="1.8" />
+              <path d="M12 7v8M8.5 11h7" stroke="#28532A" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <span id="navBrandName" class="brand-name">MediScan AI</span>
+        </div>
+
+        <nav class="nav-list">
+          <a href="dashboard.html" class="nav-link active" aria-current="page">
+            <span class="nav-link-left">
+              <span>🩺</span>
+              <span id="navDashboardLabel">Dashboard</span>
+            </span>
+          </a>
+          <a href="../history/history.html" class="nav-link">
+            <span class="nav-link-left">
+              <span>🕒</span>
+              <span id="navHistoryLabel">History Count</span>
+            </span>
+            <span id="navHistoryCount" class="nav-badge">0</span>
+          </a>
+        </nav>
+      </div>
+
+      <div id="navSafetyText" class="nav-safety-card">
+        Packaging text reader only. Always confirm medicine details with a doctor or pharmacist.
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <div class="topbar-row">
+        <button id="mobileMenuBtn" class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu">☰</button>
+        <div class="lang-group" role="group" aria-label="Language selector">
+          <button type="button" class="lang-pill active" data-lang="English">English</button>
+          <button type="button" class="lang-pill" data-lang="Hindi">हिन्दी</button>
+          <button type="button" class="lang-pill" data-lang="Punjabi">ਪੰਜਾਬੀ</button>
+        </div>
+      </div>
+
+      <section class="surface-card hero-card">
+        <h1 id="heroTitle" class="hero-title">Understand your medicine.</h1>
+        <p id="heroSubtitle" class="hero-subtitle">Scan your medicine package to understand its name, dates, and basic
+          use in simple words.</p>
+      </section>
+
+      <section class="surface-card" aria-label="Medicine image input">
+        <div class="input-modes">
+          <div id="dropZone" class="dropzone-box">
+            <div style="font-size:1.5rem;">📤</div>
+            <div id="uploadHint" style="font-weight:700; color:#28532A;">Upload Photo</div>
+            <div id="uploadFormats" style="font-size:0.84rem; color:#667266;">JPG, JPEG, PNG, WEBP</div>
+            <input id="fileInput" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" hidden />
+            <button id="chooseFileBtn" type="button" class="btn-secondary">Choose File</button>
+          </div>
+
+          <div class="camera-box">
+            <div style="font-size:1.5rem;">📷</div>
+            <div id="cameraHint" style="font-weight:700; color:#28532A;">Take Photo</div>
+            <div id="cameraSub" style="font-size:0.84rem; color:#667266;">Use device camera</div>
+            <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden />
+            <button id="openCameraBtn" type="button" class="btn-secondary">Open Camera</button>
+          </div>
+        </div>
+
+        <div id="cameraStreamBox" class="camera-stream-box" style="display:none;">
+          <video id="cameraVideo" class="camera-video" autoplay playsinline muted></video>
+          <canvas id="cameraCanvas" style="display:none;"></canvas>
+          <div class="camera-controls">
+            <button id="capturePhotoBtn" type="button" class="btn-primary">📸 Capture Photo</button>
+            <button id="closeCameraBtn" type="button" class="btn-secondary">✖ Close Camera</button>
+          </div>
+        </div>
+
+        <div id="previewPanel" class="preview-panel" style="display:none;">
+          <img id="previewImage" class="preview-img" alt="Selected medicine package preview" />
+          <div class="preview-actions">
+            <div class="preview-row-btns">
+              <button id="replaceBtn" type="button" class="btn-secondary">🔄 Replace</button>
+              <button id="removeBtn" type="button" class="btn-secondary">🗑️ Remove</button>
+            </div>
+            <button id="identifyBtn" type="button" class="btn-primary">✨ Identify Medicine</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="scanningSection" class="scan-loader" style="display:none;" aria-live="polite">
+        <div id="scanningTitle" style="font-weight:700; color:#28532A; font-size:1.08rem;">Analyzing medicine...</div>
+        <div class="scan-progress-track">
+          <div class="scan-progress-bar"></div>
+        </div>
+        <div id="scanningSub" style="color:#667266; font-size:0.92rem;">Reading package information...</div>
+      </section>
+
+      <section id="errorSection" class="error-box" style="display:none;" aria-live="polite">
+        <p id="errorText" style="margin:0 0 0.85rem 0; font-weight:700; color:#9B1C1C;">We could not read this image
+          right now. Please try again with a clear photo.</p>
+        <button id="retryBtn" type="button" class="btn-primary">🔁 Try Again</button>
+      </section>
+
+      <section id="notSureSection" class="not-sure-box" style="display:none;" aria-live="polite">
+        <h2 id="notSureTitle" style="margin:0 0 0.45rem 0; font-size:1.25rem; color:#7A4B00;">⚠️ Not Sure About This
+          Package</h2>
+        <p id="notSureBody" style="margin:0; font-size:1rem; line-height:1.6;">The image is blurry or key details are
+          hard to read. We will not guess a medicine name. Please take a brighter, steadier photo in good light or ask a
+          pharmacist.</p>
+      </section>
+
+      <section id="resultSection" class="surface-card" style="display:none;" aria-live="polite">
+        <div class="result-header">
+          <h2 id="resMedicineName" class="med-title"></h2>
+          <button id="listenBtn" type="button" class="btn-primary">🔊 Listen</button>
+        </div>
+
+        <div class="purpose-callout">
+          <div id="purposeHeading" class="purpose-heading">What This Medicine Is For</div>
+          <p id="resPurpose" class="purpose-body"></p>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-box">
+            <div id="lblManufacturer" class="meta-key">Manufacturer</div>
+            <div id="resManufacturer" class="meta-val"></div>
+          </div>
+          <div class="meta-box">
+            <div id="lblStrength" class="meta-key">Strength</div>
+            <div id="resStrength" class="meta-val"></div>
+          </div>
+          <div class="meta-box">
+            <div id="lblMfgDate" class="meta-key">Manufacturing Date</div>
+            <div id="resMfgDate" class="meta-val"></div>
+          </div>
+          <div class="meta-box">
+            <div id="lblExpDate" class="meta-key">Expiry Date</div>
+            <div id="resExpDate" class="meta-val"></div>
+          </div>
+        </div>
+
+        <div id="aiWarningBox" class="ai-notice">
+          ⚠️ AI-extracted information may be inaccurate and is not verified medical advice. Always verify with a
+          pharmacist or doctor.
+        </div>
+      </section>
+
+      <footer id="footerDisclaimerText" class="footer-note">
+        MediScan AI helps read visible medicine packaging and does not prescribe, diagnose, or replace professional
+        medical guidance.
+      </footer>
+    </main>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+
+</html>

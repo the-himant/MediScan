@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediScan AI — History</title>
+  <link rel="stylesheet" href="../dashboard/shared.css" />
+  <link rel="stylesheet" href="history.css" />
+</head>
+
+<body>
+  <div id="mobileBackdrop" class="mobile-drawer-backdrop"></div>
+  <div class="app-shell">
+    <aside id="sideNav" class="sidenav" aria-label="Main Navigation">
+      <div>
+        <div class="brand-lockup">
+          <div class="brand-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3C7.5 3 4 6.5 4 11c0 5.5 8 10 8 10s8-4.5 8-10c0-4.5-3.5-8-8-8Z" fill="#7ED957"
+                stroke="#28532A" stroke-width="1.8" />
+              <path d="M12 7v8M8.5 11h7" stroke="#28532A" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <span id="navBrandName" class="brand-name">MediScan AI</span>
+        </div>
+
+        <nav class="nav-list">
+          <a href="../dashboard/dashboard.html" class="nav-link">
+            <span class="nav-link-left">
+              <span>🩺</span>
+              <span id="navDashboardLabel">Dashboard</span>
+            </span>
+          </a>
+          <a href="history.html" class="nav-link active" aria-current="page">
+            <span class="nav-link-left">
+              <span>🕒</span>
+              <span id="navHistoryLabel">History</span>
+            </span>
+            <span id="navHistoryCount" class="nav-badge">0</span>
+          </a>
+        </nav>
+      </div>
+
+      <div id="navSafetyText" class="nav-safety-card">
+        Packaging text reader only. Always confirm medicine details with a doctor or pharmacist.
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <div class="topbar-row">
+        <button id="mobileMenuBtn" class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu">☰</button>
+        <div class="lang-group" role="group" aria-label="Language selector">
+          <button type="button" class="lang-pill active" data-lang="English">English</button>
+          <button type="button" class="lang-pill" data-lang="Hindi">हिन्दी</button>
+          <button type="button" class="lang-pill" data-lang="Punjabi">ਪੰਜਾਬੀ</button>
+        </div>
+      </div>
+
+      <section class="surface-card history-header-card">
+        <div>
+          <h1 id="historyTitle" class="history-title">🕒 Your Medicine History</h1>
+          <p id="historySubtitle" class="history-subtitle">Every medicine you've scanned, organized in one place.</p>
+        </div>
+        <div id="historyCountBadge" class="saved-count-pill">0 Scans saved</div>
+      </section>
+
+      <section id="historyControlsCard" class="surface-card">
+        <input id="searchInput" class="search-input" type="search" placeholder="Search medicines by name..."
+          aria-label="Search medicines by name" />
+        <div class="filter-bar" role="group" aria-label="Filter medicine scans">
+          <button type="button" class="filter-pill aactive" data-filter="all" id="filterAll">All Scans</button>
+          <button type="button" class="filter-pill" data-filter="recent" id="filterRecent">Recently Scanned</button>
+          <button type="button" class="filter-pill" data-filter="expired" id="filterExpired">Expired</button>
+          <button type="button" class="filter-pill" data-filter="soon" id="filterSoon">Expiring Soon</button>
+        </div>
+      </section>
+
+      <section id="emptyStateSection" class="surface-card empty-state-card" style="display:none;">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">💊</div>
+        <h2 id="emptyTitle" style="margin:0 0 0.45rem 0; color:#28532A; font-size:1.45rem;">Your history starts here.
+        </h2>
+        <p id="emptyDesc" style="margin:0 auto 1.25rem auto; max-width:440px; color:#667266;">Scan your first medicine
+          to keep its information organized and accessible whenever you need it.</p>
+        <a id="emptyCta" href="dashboard.html" class="btn-primary">✨ Scan Your First Medicine</a>
+      </section>
+
+      <section id="historyCardsGrid" class="history-grid" aria-label="Saved medicine scans"></section>
+
+      <section id="detailViewSection" class="surface-card" style="display:none;" aria-label="Medicine scan details">
+        <div style="margin-bottom:0.9rem;">
+          <button id="backToHistoryBtn" type="button" class="btn-secondary">← Back to History</button>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+          <div>
+            <h2 id="detailName" style="margin:0; font-size:1.8rem; color:#28532A;"></h2>
+            <div id="detailStatusWrap" style="margin-top:0.35rem;"></div>
+          </div>
+          <button id="detailListenBtn" type="button" class="btn-primary">🔊 Listen</button>
+        </div>
+
+        <div id="detailImageWrap" style="margin:1rem 0; display:none;">
+          <img id="detailImage" style="max-height:240px; border-radius:14px; border:1px solid #DCEAD4;"
+            alt="Saved medicine package photo" />
+        </div>
+
+        <div
+          style="background:#F5FAF2; border-left:4px solid #7ED957; border-radius:14px; padding:1rem 1.15rem; margin:1rem 0 1.15rem 0;">
+          <div id="detailPurposeLbl"
+            style="font-size:0.82rem; font-weight:700; text-transform:uppercase; color:#28532A; margin-bottom:0.3rem;">
+            What This Medicine Is For</div>
+          <p id="detailPurpose" style="margin:0; font-size:1.1rem; line-height:1.6;"></p>
+        </div>
+
+        <div class="detail-meta-grid">
+          <div class="detail-meta-tile">
+            <div id="detailMfrLbl" style="font-size:0.82rem; color:#667266;">Manufacturer</div>
+            <div id="detailMfr" style="font-size:1.05rem; font-weight:700;"></div>
+          </div>
+          <div class="detail-meta-tile">
+            <div id="detailStrLbl" style="font-size:0.82rem; color:#667266;">Strength</div>
+            <div id="detailStr" style="font-size:1.05rem; font-weight:700;"></div>
+          </div>
+          <div class="detail-meta-tile">
+            <div id="detailMfgLbl" style="font-size:0.82rem; color:#667266;">Manufacturing Date</div>
+            <div id="detailMfg" style="font-size:1.05rem; font-weight:700;"></div>
+          </div>
+          <div class="detail-meta-tile">
+            <div id="detailExpLbl" style="font-size:0.82rem; color:#667266;">Expiry Date</div>
+            <div id="detailExp" style="font-size:1.05rem; font-weight:700;"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer id="footerDisclaimerText" class="footer-note">
+        MediScan AI helps read visible medicine packaging and does not prescribe, diagnose, or replace professional
+        medical guidance.
+      </footer>
+    </main>
+  </div>
+
+  <script src="js/shared.js"></script>
+  <script src="js/history.js"></script>
+</body>
+
+</html>
